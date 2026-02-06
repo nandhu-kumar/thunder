@@ -70,6 +70,7 @@ func (ah *applicationHandler) HandleApplicationPostRequest(w http.ResponseWriter
 		TosURI:                    appRequest.TosURI,
 		PolicyURI:                 appRequest.PolicyURI,
 		Contacts:                  appRequest.Contacts,
+		UserInfoResponseType:      appRequest.UserInfoResponseType,
 		AllowedUserTypes:          appRequest.AllowedUserTypes,
 	}
 	appDTO.InboundAuthConfig = ah.processInboundAuthConfigFromRequest(appRequest.InboundAuthConfig)
@@ -97,6 +98,7 @@ func (ah *applicationHandler) HandleApplicationPostRequest(w http.ResponseWriter
 		TosURI:                    createdAppDTO.TosURI,
 		PolicyURI:                 createdAppDTO.PolicyURI,
 		Contacts:                  createdAppDTO.Contacts,
+		UserInfoResponseType:      createdAppDTO.UserInfoResponseType,
 		AllowedUserTypes:          createdAppDTO.AllowedUserTypes,
 	}
 
@@ -277,6 +279,7 @@ func (ah *applicationHandler) HandleApplicationPutRequest(w http.ResponseWriter,
 		TosURI:                    appRequest.TosURI,
 		PolicyURI:                 appRequest.PolicyURI,
 		Contacts:                  appRequest.Contacts,
+		UserInfoResponseType:      appRequest.UserInfoResponseType,
 		AllowedUserTypes:          appRequest.AllowedUserTypes,
 	}
 	updateReqAppDTO.InboundAuthConfig = ah.processInboundAuthConfigFromRequest(appRequest.InboundAuthConfig)
@@ -304,6 +307,7 @@ func (ah *applicationHandler) HandleApplicationPutRequest(w http.ResponseWriter,
 		TosURI:                    updatedAppDTO.TosURI,
 		PolicyURI:                 updatedAppDTO.PolicyURI,
 		Contacts:                  updatedAppDTO.Contacts,
+		UserInfoResponseType:      updatedAppDTO.UserInfoResponseType,
 		AllowedUserTypes:          updatedAppDTO.AllowedUserTypes,
 	}
 

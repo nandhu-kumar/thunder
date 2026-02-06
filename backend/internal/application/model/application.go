@@ -70,10 +70,11 @@ type ApplicationDTO struct {
 	PolicyURI string   `json:"policy_uri,omitempty" jsonschema:"Privacy Policy URI. Optional. Link to your application's privacy policy."`
 	Contacts  []string `json:"contacts,omitempty" jsonschema:"Contact email addresses. Optional. Administrative contact emails for this application."`
 
-	Assertion         *AssertionConfig        `json:"assertion,omitempty" jsonschema:"Assertion configuration. Optional. Customize assertion validity periods and included user attributes."`
-	Certificate       *ApplicationCertificate `json:"certificate,omitempty" jsonschema:"Application certificate. Optional. For certificate-based authentication or JWT validation."`
-	InboundAuthConfig []InboundAuthConfigDTO  `json:"inbound_auth_config,omitempty" jsonschema:"OAuth/OIDC authentication configuration. Required for OAuth-enabled applications. Configure OAuth grant types, redirect URIs, and client authentication methods."`
-	AllowedUserTypes  []string                `json:"allowed_user_types,omitempty" jsonschema:"Allowed user types. Optional. Restricts which types of users can register to this application."`
+	Assertion            *AssertionConfig        `json:"assertion,omitempty" jsonschema:"Assertion configuration. Optional. Customize assertion validity periods and included user attributes."`
+	Certificate          *ApplicationCertificate `json:"certificate,omitempty" jsonschema:"Application certificate. Optional. For certificate-based authentication or JWT validation."`
+	InboundAuthConfig    []InboundAuthConfigDTO  `json:"inbound_auth_config,omitempty" jsonschema:"OAuth/OIDC authentication configuration. Required for OAuth-enabled applications. Configure OAuth grant types, redirect URIs, and client authentication methods."`
+	UserInfoResponseType string                  `json:"userinfo_response_type,omitempty" jsonschema:"UserInfo response type. Allowed values: JSON, JWS, JWE."`
+	AllowedUserTypes     []string                `json:"allowed_user_types,omitempty" jsonschema:"Allowed user types. Optional. Restricts which types of users can register to this application."`
 }
 
 // BasicApplicationDTO represents a simplified data transfer object for application service operations.
@@ -107,10 +108,11 @@ type Application struct {
 	PolicyURI string   `yaml:"policy_uri,omitempty" json:"policy_uri,omitempty" jsonschema:"Privacy Policy URI."`
 	Contacts  []string `yaml:"contacts,omitempty" json:"contacts,omitempty"`
 
-	Assertion         *AssertionConfig            `yaml:"assertion,omitempty" json:"assertion,omitempty" jsonschema:"Assertion configuration settings."`
-	Certificate       *ApplicationCertificate     `yaml:"certificate,omitempty" json:"certificate,omitempty" jsonschema:"Application certificate settings."`
-	InboundAuthConfig []InboundAuthConfigComplete `yaml:"inbound_auth_config,omitempty" json:"inbound_auth_config,omitempty" jsonschema:"Inbound authentication configuration (OAuth2/OIDC settings)."`
-	AllowedUserTypes  []string                    `yaml:"allowed_user_types,omitempty" json:"allowed_user_types,omitempty" jsonschema:"Allowed user types for registration."`
+	Assertion            *AssertionConfig            `yaml:"assertion,omitempty" json:"assertion,omitempty" jsonschema:"Assertion configuration settings."`
+	Certificate          *ApplicationCertificate     `yaml:"certificate,omitempty" json:"certificate,omitempty" jsonschema:"Application certificate settings."`
+	InboundAuthConfig    []InboundAuthConfigComplete `yaml:"inbound_auth_config,omitempty" json:"inbound_auth_config,omitempty" jsonschema:"Inbound authentication configuration (OAuth2/OIDC settings)."`
+	UserInfoResponseType string                      `yaml:"userinfo_response_type,omitempty" json:"userinfo_response_type,omitempty" jsonschema:"UserInfo response type. Allowed values: JSON, JWS, JWE."`
+	AllowedUserTypes     []string                    `yaml:"allowed_user_types,omitempty" json:"allowed_user_types,omitempty" jsonschema:"Allowed user types for registration."`
 }
 
 // ApplicationProcessedDTO represents the processed data transfer object for application service operations.
@@ -130,10 +132,11 @@ type ApplicationProcessedDTO struct {
 	PolicyURI string `yaml:"policy_uri,omitempty"`
 	Contacts  []string
 
-	Assertion         *AssertionConfig                `yaml:"assertion,omitempty"`
-	Certificate       *ApplicationCertificate         `yaml:"certificate,omitempty"`
-	InboundAuthConfig []InboundAuthConfigProcessedDTO `yaml:"inbound_auth_config,omitempty"`
-	AllowedUserTypes  []string                        `yaml:"allowed_user_types,omitempty"`
+	Assertion            *AssertionConfig                `yaml:"assertion,omitempty"`
+	Certificate          *ApplicationCertificate         `yaml:"certificate,omitempty"`
+	InboundAuthConfig    []InboundAuthConfigProcessedDTO `yaml:"inbound_auth_config,omitempty"`
+	UserInfoResponseType string                          `yaml:"userinfo_response_type,omitempty"`
+	AllowedUserTypes     []string                        `yaml:"allowed_user_types,omitempty"`
 }
 
 // InboundAuthConfigDTO represents the data transfer object for inbound authentication configuration.
@@ -175,6 +178,7 @@ type ApplicationRequest struct {
 	PolicyURI                 string                      `json:"policy_uri,omitempty" yaml:"policy_uri,omitempty"`
 	Contacts                  []string                    `json:"contacts,omitempty" yaml:"contacts,omitempty"`
 	InboundAuthConfig         []InboundAuthConfigComplete `json:"inbound_auth_config,omitempty" yaml:"inbound_auth_config,omitempty"`
+	UserInfoResponseType      string                      `json:"userinfo_response_type,omitempty" yaml:"userinfo_response_type,omitempty"`
 	AllowedUserTypes          []string                    `json:"allowed_user_types,omitempty" yaml:"allowed_user_types,omitempty"`
 }
 
@@ -220,6 +224,7 @@ type ApplicationCompleteResponse struct {
 	PolicyURI                 string                      `json:"policy_uri,omitempty"`
 	Contacts                  []string                    `json:"contacts,omitempty"`
 	InboundAuthConfig         []InboundAuthConfigComplete `json:"inbound_auth_config,omitempty"`
+	UserInfoResponseType      string                      `json:"userinfo_response_type,omitempty" jsonschema:"UserInfo response type. Allowed values: JSON, JWS, JWE."`
 	AllowedUserTypes          []string                    `json:"allowed_user_types,omitempty"`
 }
 
@@ -242,6 +247,7 @@ type ApplicationGetResponse struct {
 	PolicyURI                 string                  `json:"policy_uri,omitempty"`
 	Contacts                  []string                `json:"contacts,omitempty"`
 	InboundAuthConfig         []InboundAuthConfig     `json:"inbound_auth_config,omitempty"`
+	UserInfoResponseType      string                  `json:"userinfo_response_type,omitempty" jsonschema:"UserInfo response type. Allowed values: JSON, JWS, JWE."`
 	AllowedUserTypes          []string                `json:"allowed_user_types,omitempty"`
 }
 

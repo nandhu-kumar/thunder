@@ -238,6 +238,7 @@ func (as *applicationService) ValidateApplication(app *model.ApplicationDTO) (
 		TosURI:                    app.TosURI,
 		PolicyURI:                 app.PolicyURI,
 		Contacts:                  app.Contacts,
+		UserInfoResponseType:      app.UserInfoResponseType,
 		AllowedUserTypes:          app.AllowedUserTypes,
 	}
 	if inboundAuthConfig != nil {
@@ -368,6 +369,7 @@ func (as *applicationService) GetApplication(appID string) (*model.Application,
 		Assertion:                 applicationDTO.Assertion,
 		Contacts:                  applicationDTO.Contacts,
 		Certificate:               applicationDTO.Certificate,
+		UserInfoResponseType:      applicationDTO.UserInfoResponseType,
 		AllowedUserTypes:          applicationDTO.AllowedUserTypes,
 	}
 
@@ -513,6 +515,7 @@ func (as *applicationService) UpdateApplication(appID string, app *model.Applica
 		TosURI:                    app.TosURI,
 		PolicyURI:                 app.PolicyURI,
 		Contacts:                  app.Contacts,
+		UserInfoResponseType:      app.UserInfoResponseType,
 		AllowedUserTypes:          app.AllowedUserTypes,
 	}
 	if inboundAuthConfig != nil {
