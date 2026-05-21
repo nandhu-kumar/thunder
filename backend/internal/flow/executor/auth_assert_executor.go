@@ -475,6 +475,10 @@ func (a *authAssertExecutor) getUserAttributesFromUserProvider(userID string) (
 	var jsonAttrs json.RawMessage
 	res, err := a.entityProvider.GetEntity(userID)
 	if err != nil {
+		if err.Code == entityprovider.ErrorCodeNotImplemented {
+			logger.Debug("Entity provider not implemented; returning no user attributes.")
+			return map[string]interface{}{}, nil
+		}
 		logger.Error("Failed to fetch user attributes",
 			log.MaskedString(log.LoggerKeyUserID, userID), log.Any("error", err))
 		return nil, errors.New("something went wrong while fetching user attributes: " + err.Error())
@@ -482,8 +486,7 @@ func (a *authAssertExecutor) getUserAttributesFromUserProvider(userID string) (
 	jsonAttrs = res.Attributes
 
 	if len(jsonAttrs) == 0 {
-		logger.Error("No user attributes returned")
-		return nil, errors.New("no user attributes returned")
+		return map[string]interface{}{}, nil
 	}
 
 	var attrs map[string]interface{}
@@ -537,6 +540,11 @@ func (a *authAssertExecutor) fetchAllUserGroups(userID string) ([]entityprovider
 
 	groups, err := a.entityProvider.GetTransitiveEntityGroups(userID)
 	if err != nil {
+		if err.Code == entityprovider.ErrorCodeNotImplemented {
+			a.logger.Debug("Entity provider not implemented; returning no user groups.",
+				log.MaskedString(log.LoggerKeyUserID, userID))
+			return nil, nil
+		}
 		a.logger.Error("Failed to fetch transitive user groups",
 			log.MaskedString(log.LoggerKeyUserID, userID), log.Any("error", err))
 		return nil, errors.New("something went wrong while fetching user groups: " + err.Error())

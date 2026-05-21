@@ -42,6 +42,8 @@ func InitializeAuthnProvider(
 	switch authnProviderConfig.Type {
 	case "rest":
 		return initializeRestAuthnProvider()
+	case "sunbird":
+		return initializeSunbirdRCAuthnProvider()
 	default:
 		return initializeDefaultAuthnProvider(entitySvc, passkeySvc, otpSvc, federatedAuths)
 	}
@@ -55,6 +57,20 @@ func initializeDefaultAuthnProvider(
 	federatedAuths map[idp.IDPType]authncommon.FederatedAuthenticator,
 ) AuthnProviderInterface {
 	return newDefaultAuthnProvider(entitySvc, passkeySvc, otpSvc, federatedAuths)
+}
+
+// initializeSunbirdRCAuthnProvider initializes the SunbirdRC KBI authentication provider.
+func initializeSunbirdRCAuthnProvider() AuthnProviderInterface {
+	cfg := config.GetServerRuntime().Config.AuthnProvider.SunbirdRC
+	if cfg.SearchURL == "" {
+		log.GetLogger().Fatal("AuthnProvider SunbirdRC SearchURL is required but found empty")
+	}
+	timeout := time.Duration(cfg.Timeout) * time.Second
+	if timeout == 0 {
+		timeout = 10 * time.Second
+	}
+	httpClient := systemhttp.NewHTTPClientWithTimeout(timeout)
+	return newSunbirdRCAuthnProvider(cfg, httpClient)
 }
 
 // initializeRestAuthnProvider initializes the REST authentication provider.

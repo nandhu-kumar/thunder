@@ -36,19 +36,27 @@
                         "components": [
                             {
                                 "id": "input_001",
-                                "ref": "username",
+                                "ref": "individualId",
                                 "type": "TEXT_INPUT",
                                 "label": "{{ t(signin:forms.credentials.fields.username.label) }}",
                                 "required": true,
                                 "placeholder": "{{ t(signin:forms.credentials.fields.username.placeholder) }}"
                             },
                             {
-                                "id": "input_002",
-                                "ref": "password",
-                                "type": "PASSWORD_INPUT",
-                                "label": "{{ t(signin:forms.credentials.fields.password.label) }}",
+                                "id": "input_003",
+                                "ref": "fullName",
+                                "type": "TEXT_INPUT",
+                                "label": "Full Name",
                                 "required": true,
-                                "placeholder": "{{ t(signin:forms.credentials.fields.password.placeholder) }}"
+                                "placeholder": "Enter your full name"
+                            },
+                            {
+                                "id": "input_002",
+                                "ref": "dob",
+                                "type": "TEXT_INPUT",
+                                "label": "Date of Birth",
+                                "required": true,
+                                "placeholder": "YYYY-MM-DD"
                             },
                             {
                                 "category": "DISPLAY",
@@ -80,14 +88,20 @@
                     "inputs": [
                         {
                             "ref": "input_001",
-                            "identifier": "username",
+                            "identifier": "individualId",
+                            "type": "TEXT_INPUT",
+                            "required": true
+                        },
+                        {
+                            "ref": "input_003",
+                            "identifier": "fullName",
                             "type": "TEXT_INPUT",
                             "required": true
                         },
                         {
                             "ref": "input_002",
-                            "identifier": "password",
-                            "type": "PASSWORD_INPUT",
+                            "identifier": "dob",
+                            "type": "TEXT_INPUT",
                             "required": true
                         }
                     ],
@@ -102,18 +116,15 @@
             "id": "basic_auth",
             "type": "TASK_EXECUTION",
             "executor": {
-                "name": "BasicAuthExecutor"
+                "name": "BasicAuthExecutor",
+                "inputs": [
+                    {"identifier": "individualId", "type": "TEXT_INPUT", "required": true},
+                    {"identifier": "fullName", "type": "PASSWORD_INPUT", "required": true},
+                    {"identifier": "dob", "type": "PASSWORD_INPUT", "required": true}
+                ]
             },
-            "onSuccess": "authorization_check",
+            "onSuccess": "auth_assert",
             "onIncomplete": "prompt_credentials"
-        },
-        {
-            "id": "authorization_check",
-            "type": "TASK_EXECUTION",
-            "executor": {
-                "name": "AuthorizationExecutor"
-            },
-            "onSuccess": "auth_assert"
         },
         {
             "id": "auth_assert",

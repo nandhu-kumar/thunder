@@ -461,8 +461,20 @@ type PasskeyConfig struct {
 
 // AuthnProviderConfig holds the authentication provider configuration details.
 type AuthnProviderConfig struct {
-	Type string     `yaml:"type" json:"type"`
-	Rest RestConfig `yaml:"rest" json:"rest"`
+	Type      string                       `yaml:"type" json:"type"`
+	Rest      RestConfig                   `yaml:"rest" json:"rest"`
+	SunbirdRC SunbirdRCAuthnProviderConfig `yaml:"sunbirdrc" json:"sunbirdrc"`
+}
+
+// SunbirdRCAuthnProviderConfig holds config for the SunbirdRC KBI authn provider.
+type SunbirdRCAuthnProviderConfig struct {
+	SearchURL     string `yaml:"search_url" json:"search_url"`
+	IDField       string `yaml:"id_field" json:"id_field"`
+	EntityIDField string `yaml:"entity_id_field" json:"entity_id_field"`
+	FieldDetails  string `yaml:"field_details" json:"field_details"`
+	EntityURL     string `yaml:"entity_url" json:"entity_url"`
+	ClaimsMapping string `yaml:"claims_mapping" json:"claims_mapping"`
+	Timeout       int    `yaml:"timeout" json:"timeout"`
 }
 
 // UserProviderConfig holds the user provider configuration details.

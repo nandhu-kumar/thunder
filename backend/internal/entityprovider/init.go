@@ -43,6 +43,13 @@ func initializeDefaultEntityProvider(
 	return newDefaultEntityProvider(entitySvc)
 }
 
+// NewDefaultEntityProvider constructs a default (entity-service backed) entity provider,
+// ignoring the deployment.yaml `entityProvider.type` setting. Use only for code paths that
+// must keep functioning when the configured provider is "disabled".
+func NewDefaultEntityProvider(entitySvc entity.EntityServiceInterface) EntityProviderInterface {
+	return newDefaultEntityProvider(entitySvc)
+}
+
 // initializeDisabledEntityProvider initializes the disabled entity provider.
 func initializeDisabledEntityProvider() EntityProviderInterface {
 	return newDisabledEntityProvider()

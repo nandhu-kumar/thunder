@@ -166,6 +166,11 @@ func registerServices(mux *http.ServeMux, cacheManager cache.CacheManagerInterfa
 	// Initialize entity provider
 	entityProvider := entityprovider.InitializeEntityProvider(entityService)
 
+	// flowEntityProvider is an always-default entity provider used only by the flow execution
+	// service, so flows can resolve application metadata even when the configured provider is
+	// "disabled". See backend/internal/flow/flowexec/service.go: buildFlowApplication.
+	flowEntityProvider := entityprovider.NewDefaultEntityProvider(entityService)
+
 	userService, ouUserResolver, userExporter, err := user.Initialize(
 		mux, entityService, ouService, entityTypeService, ouAuthzService,
 	)
@@ -296,7 +301,7 @@ func registerServices(mux *http.ServeMux, cacheManager cache.CacheManagerInterfa
 	exporters = append(exporters, layoutExporter)
 
 	inboundClientService, err := inboundclient.Initialize(
-		cacheManager, certservice, entityProvider,
+		cacheManager, certservice, flowEntityProvider,
 		themeMgtService, layoutMgtService, flowMgtService, entityTypeService, consentService)
 	if err != nil {
 		logger.Fatal("Failed to initialize InboundClientService", log.Error(err))
@@ -304,7 +309,7 @@ func registerServices(mux *http.ServeMux, cacheManager cache.CacheManagerInterfa
 
 	// TODO: Remove entityService dependency after finalizing declarative resource loading pattern
 	applicationService, applicationExporter, err := application.Initialize(
-		mux, mcpServer, entityProvider, entityService, inboundClientService, ouService, i18nService)
+		mux, mcpServer, flowEntityProvider, entityService, inboundClientService, ouService, i18nService)
 	if err != nil {
 		logger.Fatal("Failed to initialize ApplicationService", log.Error(err))
 	}
@@ -318,7 +323,7 @@ func registerServices(mux *http.ServeMux, cacheManager cache.CacheManagerInterfa
 	designResolveService := resolve.Initialize(mux, themeMgtService, layoutMgtService, applicationService)
 
 	// Initialize flow metadata service
-	_ = flowmeta.Initialize(mux, inboundClientService, entityProvider, ouService, designResolveService, i18nService)
+	_ = flowmeta.Initialize(mux, inboundClientService, flowEntityProvider, ouService, designResolveService, i18nService)
 
 	// Initialize export service with collected exporters
 	_ = export.Initialize(mux, exporters)
@@ -341,7 +346,7 @@ func registerServices(mux *http.ServeMux, cacheManager cache.CacheManagerInterfa
 		i18nService,
 	)
 
-	flowExecService, err := flowexec.Initialize(mux, flowMgtService, inboundClientService, entityProvider,
+	flowExecService, err := flowexec.Initialize(mux, flowMgtService, inboundClientService, flowEntityProvider,
 		execRegistry, observabilitySvc, runtimeCryptoSvc)
 	if err != nil {
 		logger.Fatal("Failed to initialize flow execution service", log.Error(err))
